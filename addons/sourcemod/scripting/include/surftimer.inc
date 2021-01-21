@@ -3,6 +3,9 @@
 #endif
 #define _surftimer_included
 
+// Plugin Info
+#define VERSION "1.1.0-dev"
+
 /* Natives */
 
 /**

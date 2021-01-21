@@ -71,8 +71,11 @@ jobs:
 
       - name: Compile plugin
         run: |
-          echo -e "\nCompiling SurfTimer.sp..."
-          spcomp -w234 -O2 -v2 -i $INCLUDE_PATH SurfTimer.sp
+          for file in *.sp
+          do
+            echo -e "\nCompiling $file..."
+            spcomp -w234 -O2 -v2 -i $INCLUDE_PATH $file
+          done
         working-directory: ${{ env.SCRIPTS_PATH }}/
 
       - name: Move compiled plugins
