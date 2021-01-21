@@ -189,6 +189,10 @@ void CreateConVars()
 	g_iAdminCountryTags = AutoExecConfig_CreateConVar("ck_admin_country_tags", "0", "(1 / 0) Enable/Disable country tags for admins", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	g_replayBotDelay = AutoExecConfig_CreateConVar("ck_replay_bot_delay", "10", "Delay in seconds after initial mapstart after the bots join the server", FCVAR_NOTIFY, true, 10.0);
 	g_iVIPCommands = AutoExecConfig_CreateConVar("ck_vip_commands", "1", "(1 / 0) Enable/Disable all SurfTimer VIP commands.", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_cEnableRequiredPlayersRecording = AutoExecConfig_CreateConVar("ck_enable_player_recording", "0", "enable player recording only at X amount of players (x = ck_player_record_limit)", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_cRequiredPlayersRecordLimit = AutoExecConfig_CreateConVar("ck_player_record_limit", "30", "max players for player recording to be active", FCVAR_NOTIFY, true, 1.0, true, 64.0);
+	g_cStopRecordMissedPB = AutoExecConfig_CreateConVar("ck_stop_recording_missed_pb", "0", "Stop recording if player missed his pb?", FCVAR_NOTIFY, true, 0.0, true, 1.0);
+	g_cStopRecordTime = AutoExecConfig_CreateConVar("ck_stop_recording_time", "3600", "(Time in seconds) Stop replay recording to prevent server crashes because of a massive recording array");
 
 	g_hPointSystem = AutoExecConfig_CreateConVar("ck_point_system", "1", "on/off - Player point system", FCVAR_NOTIFY, true, 0.0, true, 1.0);
 	HookConVarChange(g_hPointSystem, OnSettingChanged);

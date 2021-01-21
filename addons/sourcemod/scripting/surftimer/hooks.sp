@@ -86,6 +86,28 @@ public Action Event_OnPlayerSpawn(Handle event, const char[] name, bool dontBroa
 		g_bInJump[client] = false;
 		g_bInDuck[client] = false;
 
+		// auto disable player recording if current player count exceeds player limit
+		if (g_cEnableRequiredPlayersRecording.BoolValue)
+		{
+			int iCount = GetClientCount(true);
+
+			if (g_cRequiredPlayersRecordLimit.IntValue < iCount) {
+				g_bRequiredPlayersRecording = false;
+
+				// stop recording for all players if player limit exceeds
+				for (int i = 1; i <= MaxClients; i++) {
+					if (IsValidClient(i) && IsPlayerAlive(i))
+					{
+						StopRecording(i);
+					}
+				} 
+			// hysteresis (player record limit > player count + 5) to prevent cvar spam and should prevent "flickering"
+			} else if (g_cRequiredPlayersRecordLimit.IntValue >= iCount + 5) {
+				// reenable player recording if player count is 5 players lower then actual limit
+				g_bRequiredPlayersRecording = true;
+			}
+		}
+
 		// Set stage to 1 on spawn cause why not
 		if (!g_bRespawnPosition[client] && !g_specToStage[client])
 		{

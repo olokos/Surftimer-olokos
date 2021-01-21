@@ -2932,8 +2932,36 @@ public void CheckRun(int client)
 		if (g_fCurrentRunTime[client] > g_fPersonalStyleRecord[g_iCurrentStyle[client]][client] && !g_bMissedMapBest[client] && !g_bPause[client] && g_iClientInZone[client][2] == 0)
 		{
 			g_bMissedMapBest[client] = true;
+			
 			if (g_fPersonalStyleRecord[g_iCurrentStyle[client]][client] > 0.0) {
 				CPrintToChat(client, "%t", "MissedMapBest", g_szChatPrefix, g_szPersonalStyleRecord[g_iCurrentStyle[client]][client]);
+
+				if (g_cStopRecordTime.FloatValue > 0.0 && g_fCurrentRunTime[client] > g_cStopRecordTime.FloatValue)
+				{
+					StopRecording(client);
+				}
+				
+				if (g_cStopRecordMissedPB.BoolValue)
+				{
+					int style = g_iCurrentStyle[client];
+					int zGroup = g_iClientInZone[client][2];
+
+					if (zGroup == 0) // in main map
+					{
+						if (g_fCurrentRunTime[client] > g_fRecordStyleMapTime[style]) // other styles
+						{
+							StopRecording(client);
+						}
+					}
+					else // in bonus
+					{
+						if (g_fCurrentRunTime[client] > g_fStyleBonusFastest[style][zGroup]) // other styles
+						{
+							StopRecording(client);
+						}
+					}
+				}
+
 				if (g_iAutoReset[client] && g_iCurrentStyle[client] == 0) {
 					Command_Restart(client, 1);
 					CPrintToChat(client, "%t", "AutoResetMessage1", g_szChatPrefix);

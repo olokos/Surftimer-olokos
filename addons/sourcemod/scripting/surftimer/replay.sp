@@ -74,6 +74,10 @@ public void StartRecording(int client)
 {
 	if (!IsValidClient(client) || IsFakeClient(client))
 		return;
+	
+	StopRecording(client);
+	if (g_cEnableRequiredPlayersRecording.BoolValue && !g_bRequiredPlayersRecording) // return if limited recording is disabled
+		return;
 
 	g_hRecording[client] = CreateArray(sizeof(FrameInfo));
 	g_hRecordingAdditionalTeleport[client] = CreateArray(sizeof(AdditionalTeleport));
@@ -1176,6 +1180,9 @@ public void PlayReplay(int client, int &buttons, int &subtype, int &seed, int &i
 public void Stage_StartRecording(int client)
 {
 	if (!IsValidClient(client) || IsFakeClient(client) || !g_bhasStages || g_bSavingWrcpReplay[client])
+		return;
+
+	if (g_cEnableRequiredPlayersRecording.BoolValue && !g_bRequiredPlayersRecording) // return if player recording is disabled
 		return;
 
 	GetClientAbsOrigin(client, g_fStageInitialPosition[client]);
